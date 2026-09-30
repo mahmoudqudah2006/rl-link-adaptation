@@ -19,19 +19,44 @@ The packet/block error probability is represented by a smooth logistic curve aro
 
 The reward balances useful spectral efficiency and reliability:
 
-[
+$
 r = \eta(1-\mathrm{BLER}) - \lambda\max(\mathrm{BLER}-B_{target}, 0)
-]
+$
 
-where (eta) is spectral efficiency.
+where `$\\eta# RL Link Adaptation
+
+A compact reinforcement-learning environment for **adaptive modulation and coding research** under a time-varying wireless channel.
+
+The first release includes a Gymnasium-style standalone environment and a tabular Q-learning baseline. Keeping the core environment dependency-light makes the reward model and channel dynamics easy to inspect before adding larger RL frameworks.
+
+## Problem formulation
+
+At each time step the agent observes the current SNR and previous MCS, then selects one of four abstract MCS profiles:
+
+| Action | Spectral efficiency | Approx. SNR operating point |
+|---:|---:|---:|
+| 0 | 1.0 bit/s/Hz | 0 dB |
+| 1 | 2.0 bit/s/Hz | 6 dB |
+| 2 | 4.0 bit/s/Hz | 12 dB |
+| 3 | 6.0 bit/s/Hz | 18 dB |
+
+The packet/block error probability is represented by a smooth logistic curve around each operating point. These are **research-model parameters**, not standardized BLER curves.
+
+The reward balances useful spectral efficiency and reliability:
+
+$
+r = \eta(1-\mathrm{BLER}) - \lambda\max(\mathrm{BLER}-B_{target}, 0)
+$
+
+ is spectral efficiency.
 
 ## Channel dynamics
 
 SNR follows a bounded first-order stochastic process:
 
-[
+$
 \gamma_{t+1}=\rho\gamma_t+(1-\rho)\mu+\epsilon_t.
-]
+$
 
 This creates temporal correlation without pretending to replace a full fading simulator.
 
